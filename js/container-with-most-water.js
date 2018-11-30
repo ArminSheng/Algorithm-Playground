@@ -34,7 +34,7 @@ var maxArea2 = function(height) {
     return maxArea;
 };
 
-var maxArea2$ = function(height) {
+var maxArea3 = function(height) {
     let left = 0, right = height.length - 1;
     let maxArea = 0;
 
