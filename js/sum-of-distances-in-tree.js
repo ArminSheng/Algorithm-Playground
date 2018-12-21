@@ -1,20 +1,10 @@
-class TreeNode {
-    constructor (n) {
-      this.val = n;
-      this.nodes = [];
-    }
-  
-    add (node) {
-      this.nodes.push(node);
-    }
-}
   
   /**
    * @param {number} N
    * @param {number[][]} edges
    * @return {number[]}
    */
-var sumOfDistancesInTree = function(N, edges) {
+  var sumOfDistancesInTree = function(N, edges) {
     if (!N) return [];
     if (edges.length < 1) return [0];
 
@@ -41,51 +31,35 @@ var sumOfDistancesInTree = function(N, edges) {
         i++;
     }
 
-    function dfs_leaf(root, parent, dp) {
-        let node = map[root];
-        for (let n of node.nodes) {
-            if (n.val === parent) continue;
-            
-            dp[root][1] += dfs_leaf(n.val, root, dp);
-        }
-
-        dp[root][1] += 1;
-        return dp[root][1];
-    }
-
-    function dfs_root(root) {
-        let res = 1;
-        function helper (root, dist) {
-            if (root.used) return;
-            root.used = true;
-
-            res += dist * (root.nodes.length - 1);
-            for (let node of root.nodes) {
-                helper(node, dist + 1);
-            }
-            root.used = false;
-        }
-        helper(root, 1);
-        return res;
-    }
-
     function dfs_dp(root, parent, dp) {
-        const leafs = dp[root][1];
-        const node = map[root];
+        let node = map[root];
+        let sum = 0, node_sum = 1;
 
-        if (!ans[root]) {
-            dp[root][0] = ans[parent] - 2 * leafs + N;
-            ans[root] = dp[root][0]; 
-        }
         for (let n of node.nodes) {
             if (n.val === parent) continue;
-            dfs_dp(n.val, root, dp);
+            let res = dfs_dp(n.val, root, dp);
+            sum += res.sum + res.node_sum;
+            node_sum += res.node_sum;
         }
+
+        dp[root][0] = sum;
+        dp[root][1] = node_sum;
+        return {sum, node_sum};
     }
 
-    dfs_leaf(0, -1, dp);
-    ans[0] = dp[0][0] = dfs_root(map[0]);
-    dfs_dp(0, 0, dp);
+    function dfs_ans(node, parent, dp) {
+        for (let n of map[node].nodes) {
+            let root = n.val;
+            if (root === parent) continue;
+
+            const leafs = dp[root][1];
+            ans[root] = ans[node] - 2 * leafs + N;
+            dfs_ans(root, node, dp);
+        }
+    }
+    
+    ans[0] = dfs_dp(0, -1, dp).sum;
+    dfs_ans(0, 0, dp);
     
     return ans;
 };
