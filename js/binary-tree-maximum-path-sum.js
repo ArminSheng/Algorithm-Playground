@@ -19,7 +19,7 @@ var maxPathSum = function(root) {
         const sum = val + left + right;
         const _max = Math.max(left + val, right + val, val);
 
-        max = Math.max.apply(null, [max, sum, _max]);
+        max = Math.max(max, sum, _max);
         return _max;
     }
 
