@@ -49,3 +49,5 @@ var isCompleteTree2 = function(root) {
 
     return true;
 };
+
+export default isCompleteTree;
