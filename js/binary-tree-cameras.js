@@ -39,27 +39,27 @@ var minCameraCover = function(root) {
     return ans;
 }
 
-// var minCameraCover = function(root) {
-//     // 0: Strict ST; All nodes below this are covered, but not this one
-//     // 1: Normal ST; All nodes below and incl this are covered - no camera
-//     // 2: Placed camera; All nodes below this are covered, plus camera here
-//     function solve(node) {
-//         if (node == null)
-//         return [0, 0, 99999];
+var minCameraCover2 = function(root) {
+    // 0: Strict ST; All nodes below this are covered, but not this one
+    // 1: Normal ST; All nodes below and incl this are covered - no camera
+    // 2: Placed camera; All nodes below this are covered, plus camera here
+    function solve(node) {
+        if (node == null)
+        return [0, 0, 99999];
         
-//         const L = solve(node.left);
-//         const R = solve(node.right);
-//         const mL12 = Math.min(L[1], L[2]);
-//         const mR12 = Math.min(R[1], R[2]);
+        const L = solve(node.left);
+        const R = solve(node.right);
+        const mL12 = Math.min(L[1], L[2]);
+        const mR12 = Math.min(R[1], R[2]);
         
-//         const d0 = L[1] + R[1];
-//         const d1 = Math.min(L[2] + mR12, R[2] + mL12);
-//         const d2 = 1 + Math.min(L[0], mL12) + Math.min(R[0], mR12);
-//         return [d0, d1, d2];
-//     }
-//     const ans = solve(root);
-//     return Math.min(ans[1], ans[2]);
-// }
+        const d0 = L[1] + R[1];
+        const d1 = Math.min(L[2] + mR12, R[2] + mL12);
+        const d2 = 1 + Math.min(L[0], mL12) + Math.min(R[0], mR12);
+        return [d0, d1, d2];
+    }
+    const ans = solve(root);
+    return Math.min(ans[1], ans[2]);
+}
 
 var minCameraCover = function(root) {
     const NOT_MONITORED = 0;
@@ -88,7 +88,7 @@ var minCameraCover = function(root) {
 }
 
 
-var minCameraCover = function(root) {
+var minCameraCover3 = function(root) {
     if (root && !root.left && !root.right) return 1;
 
     function dfs (root) {

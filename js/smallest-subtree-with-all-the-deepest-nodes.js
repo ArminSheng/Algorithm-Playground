@@ -1,4 +1,4 @@
-/** TODO
+/**
  * Definition for a binary tree node.
  * function TreeNode(val) {
  *     this.val = val;
@@ -10,27 +10,38 @@
  * @return {TreeNode}
  */
 var subtreeWithAllDeepest = function(root) {
-    const map = [];
-    let deepest = 0;
+    function dfs (root, lvl) {
+        if (!root) return lvl;
 
-    function helper(root, lvl) {
-        if (!root) return;
+        const l = dfs(root.left, lvl + 1);
+        const r = dfs(root.right, lvl + 1);
 
-        map[lvl] = map[lvl] || [];
-        if (root.left || root.right) {
-            map[lvl].push(root);
+        if (l === r && l >= max) {
+            res = root;
+            max = l;
         }
-        deepest = lvl;
 
-        helper(root.left, lvl + 1);
-        helper(root.right, lvl + 1);
+        return Math.max(l, r);
     }
 
-    helper(root, 0);
-
-    while(map[deepest - 1].length > 1) {
-        deepest--;
-    }
-
-    return map[deepest][0];
+    let res;
+    let max = 0;
+    dfs(root, 0);
+    return res;
 };
+
+var subtreeWithAllDeepest2 = function (root) {
+    if(!root) return;
+
+    const left = depth(root.left);
+    const right = depth(root.right);
+
+    if(left === right) return root;
+    if(left > right) return subtreeWithAllDeepest(root.left);
+    else return subtreeWithAllDeepest(root.right);
+}
+
+function depth(root) {
+    if(!root) return 0;
+    return Math.max(depth(root.left), depth(root.right)) + 1;
+}

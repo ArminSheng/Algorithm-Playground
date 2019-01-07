@@ -10,14 +10,19 @@
  * @return {number[]}
  */
 var rightSideView = function(root) {
-    function dfs(root) {
+    function dfs(root, l) {
         if (!root) return;
-        res.push(root.val);
-        dfs(root.right || root.left);
+
+        if (res.length === l) {
+            res.push(root.val);
+        }
+        
+        dfs(root.right, l + 1);
+        dfs(root.left, l + 1);
     }
 
     const res = [];
-    dfs(root);
+    dfs(root, 0);
     
     return res;
 };
