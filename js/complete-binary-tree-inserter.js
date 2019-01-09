@@ -67,3 +67,42 @@ CBTInserter.prototype.get_root = function() {
  * var param_1 = obj.insert(v)
  * var param_2 = obj.get_root()
  */
+
+class CBTInserter2 {
+    constructor (root) {
+        this.root = root;
+
+        this.nodes = [];
+        this._getNodes(root);
+    }
+
+    _getNodes (root) {
+        if (!root) return;
+        const q = [root];
+
+        while (q.length) {
+            root = q.shift();
+            if (!root) continue;
+            this.nodes.push(root);
+            q.push(root.left);
+            q.push(root.right);
+        }
+    }
+
+   insert (v) {
+       const n = new TreeNode(v);
+       this.nodes.push(n);
+       const idx = this.nodes.length;
+       const parentIdx = idx >> 1;
+       const parent = this.nodes[parentIdx - 1];
+
+       if (!parent.left) parent.left = n;
+       else if (!parent.right) parent.right = n;
+
+       return parent.val;
+   }
+
+   get_root () {
+       return this.root;
+   }
+}
