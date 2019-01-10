@@ -57,3 +57,31 @@ function deleteInArr (arr, ele) {
     const idx = arr.lastIndexOf(ele);
     arr.splice(idx, 1);
 }
+
+/**
+ * @param {number[][]} edges
+ * @return {number[]}
+ */
+var findRedundantConnection2 = function(edges) {
+    const UF = [];
+    let r1, r2;
+
+    for (let i of edges) {
+        r1 = findUnion(i[0]);
+        r2 = findUnion(i[1]);
+
+        if (r1 === r2) {
+            return i;
+        }
+
+        UF[r2] = r1;
+    }
+
+    function findUnion (v) {
+        if (!UF[v]) UF[v] = v;
+        while (UF[v] !== v) {
+            v = UF[v];
+        }
+        return v;
+    }
+};
