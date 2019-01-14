@@ -26,6 +26,7 @@ var canFinish = function(numCourses, prerequisites) {
                 hasCycle = true;
                 return;
             }
+
         }
 
         onStack[v] = false;
