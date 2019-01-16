@@ -5,40 +5,45 @@
  */
 var findMinHeightTrees = function(n, edges) {
     if (edges.length >= n) return [];
+    if (n === 1) return [0];
 
-    const adj = [];
-    const max = 0;
-    const res = [];
-    const marked = [];
-
+    let adj = [];
     for (let e of edges) {
         e0 = e[0];
         e1 = e[1];
 
-        adj[e0] ? adj[e0].push(e1) : (adj[e0] = []);
-        adj[e1] ? adj[e1].push(e1) : (adj[e1] = []);
+        if (adj[e0]) {
+            adj[e0].push(e1);
+        } else {
+            adj[e0] = [e1];
+        }
+
+        if (adj[e1]) {
+            adj[e1].push(e0);
+        } else {
+            adj[e1] = [e0];
+        }
     }
 
-    function dfs(v, lvl, path) {
-        path.push(v);
-        marked[v] = true;
-
-        // if (lvl > max) {
-        if (marked.length === n) {
-            max = lvl;
-            res = [];
-            mid = lvl % 2;
-
-            if (mid === 0) {
-                res.push(path[lvl / 2]);
-                res.push(path[lvl / 2 + 1]);
-            } else {
-                res.push(path[lvl >> 1]);
+    let leafs;
+    while (n > 2) {
+        leafs = [];
+        adj.forEach((e, i) => {
+            if (e.length === 1) {
+                delete adj[i];
+                leafs.push(i);
+                n--;
             }
-        }
+        });
 
-        for (let w of adj[v]) {
-            if (!marked[w]) dfs(w, lvl + 1, path);
-        }
+        leafs.forEach(i => {
+            adj.forEach(v => {
+                if (!v) return;
+                let idx = v.indexOf(i);
+                if (idx > -1) v.splice(idx, 1);
+            })
+        });
     }
+
+    return Object.keys(adj);
 };
