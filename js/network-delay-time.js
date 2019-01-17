@@ -5,9 +5,7 @@
  * @return {number}
  */
 var networkDelayTime = function(times, N, K) {
-
     const G = [];
-
     for (let i = 0; i <= N; i++) {
         G[i] = [];
     }
@@ -15,31 +13,39 @@ var networkDelayTime = function(times, N, K) {
     for (let t of times) {
         let v0 = t[0];
         let v1 = t[1];
-        G[v0].push({key: v1, val: t[2]});
+        G[v0].push({to: v1, weight: t[2]});
     }
 
-    const marked = [];
-    let total = 0;
-    let n = 0;
+    let res = 0;
+    const distTo = Array(N + 1).fill(Infinity);
+    distTo[0] = 0;
+    distTo[K] = 0;
 
-    function dfs(v, t) {
-        marked[v] = true;
-        n++;
-        for (let w of G[v]) {
-            let key = w.key;
-            let _t = w.val;
-            if (!marked[key]) {
-                // t += _t;
-                total = Math.max(total, t + _t);
-                dfs(key, t + _t);
+    function relax(v, queue) {
+        for (let edge of G[v]) {
+            let to = edge.to;
+            let dis = distTo[v] + edge.weight;
+            
+            if (distTo[to] > dis) {
+                distTo[to] = dis;
+                if (!queue.includes(to)) {
+                    queue.push(to);
+                }
             }
         }
     }
 
-    dfs(K, 0);
-    if (n !== N) {
-        return -1;
+    function dijkstra(v) {
+        const queue = [v];
+        
+        while (queue.length) {
+            v = queue.shift();
+            relax(v, queue);
+        }
     }
 
-    return total;
+    dijkstra(K);
+    res = Math.max.apply(null, distTo);
+
+    return res === Infinity ? -1 : res;
 };
