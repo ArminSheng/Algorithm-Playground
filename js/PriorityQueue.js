@@ -62,7 +62,7 @@ class IndexPriorityQueue {
     }
 
     change (key, priority, index) {
-        const [pq, keys] = this;
+        const {pq, keys} = this;
 
         keys[key] = priority;
         this.swim(index);
