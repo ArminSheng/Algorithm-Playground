@@ -4,19 +4,13 @@
  */
 var numSimilarGroups = function(A) {
     function getUF(s, index) {
-        let _s, idx = -1;
+        let _s;
 
-        for (let i = 0; i < L; i++) {
-            for (let j = i + 1; j < L; j++) {
-                // if (s[i] === s[j] || s[j] === s[j - 1] || (s[i - 1] && s[i - 1] === s[i])) continue;
-                if (s[i] === s[j]) continue;
-                
-                _s = swap(i, j, s);
-                idx = map[_s];
+        for (let i = index + 1; i < N; i++) {
+            _s = A[i];
 
-                if (idx > -1) {
-                    union(index, idx);
-                }
+            if (isSimilar(s, _s)) {
+                union(index, i);
             }
         }
     }
@@ -34,15 +28,18 @@ var numSimilarGroups = function(A) {
         count--;
     }
 
+    // Reduce the duplicate str
+    const map = {};
+    for (let str of A) {
+        map[str] = 1;
+    }
+    
+    A = Object.keys(map);
+
     const uf = A.map((_, idx) => idx);
     const N = A.length;
     const L = A[0].length;
-    const map = {};
     let count = N;
-
-    for (let i = 0; i < N; i++) {
-        map[A[i]] = i;
-    }
 
     for (let i = 0; i < N; i++) {
         let str = A[i];
@@ -52,8 +49,12 @@ var numSimilarGroups = function(A) {
     return count;
 };
 
-function swap(i, j, str) {
-    let s = str.split('');
-    [s[i], s[j]] = [s[j], s[i]];
-    return s.join('');
+function isSimilar(s1, s2) {
+    let dis = 0;
+    for (let i = 0; i < s1.length; i++) {
+        if (s1[i] !== s2[i]) dis++;
+        if (dis > 2) return false;
+    }
+
+    return dis === 2;
 }
