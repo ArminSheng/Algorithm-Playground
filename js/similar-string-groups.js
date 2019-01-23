@@ -15,13 +15,13 @@ var numSimilarGroups = function(A) {
         }
     }
 
-    function getVector (i) {
-        return i === uf[i] ? i : getVector(uf[i]);
+    function find(i) {
+        return i === uf[i] ? i : find(uf[i]);
     } 
     
     function union(p, q) {
-        let pRoot = getVector(p);
-        let qRoot = getVector(q);
+        let pRoot = find(p);
+        let qRoot = find(q);
     
         if (pRoot === qRoot) return;
         uf[pRoot] = qRoot;
@@ -29,13 +29,8 @@ var numSimilarGroups = function(A) {
     }
 
     // Reduce the duplicate str
-    const map = {};
-    for (let str of A) {
-        map[str] = 1;
-    }
+    A = Array.from(new Set(A));
     
-    A = Object.keys(map);
-
     const uf = A.map((_, idx) => idx);
     const N = A.length;
     let count = N;
@@ -55,5 +50,5 @@ function isSimilar(s1, s2) {
         if (dis > 2) return false;
     }
 
-    return dis === 2;
+    return true;
 }
