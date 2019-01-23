@@ -3,7 +3,7 @@
  * @return {number}
  */
 var numSimilarGroups = function(A) {
-    function getUF(s, index) {
+    function quickUnion(s, index) {
         let _s;
 
         for (let i = index + 1; i < N; i++) {
@@ -38,12 +38,11 @@ var numSimilarGroups = function(A) {
 
     const uf = A.map((_, idx) => idx);
     const N = A.length;
-    const L = A[0].length;
     let count = N;
 
     for (let i = 0; i < N; i++) {
         let str = A[i];
-        getUF(str, i);
+        quickUnion(str, i);
     }
 
     return count;
