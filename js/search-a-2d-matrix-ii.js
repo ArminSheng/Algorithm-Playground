@@ -4,6 +4,25 @@
  * @return {boolean}
  */
 var searchMatrix = function(matrix, target) {
+    const hei = matrix.length;
+    if (!hei) return false;
+
+    let x = matrix[0].length - 1, y = 0;
+
+    while (x >= 0 && y < hei) {
+        if (matrix[y][x] > target) {
+            x--;
+        } else if (matrix[y][x] < target) {
+            y++;
+        } else {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+var searchMatrix2 = function(matrix, target) {
     for (let arr of matrix) {
         if (target < arr[0]) break;
         if (binarySearch(arr, target)) return true;
