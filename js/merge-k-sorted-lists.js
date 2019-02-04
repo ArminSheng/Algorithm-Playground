@@ -20,24 +20,18 @@ var mergeKLists = function(lists) {
         }
     }
 
-    let head, tail;
+    const head = new ListNode(0); 
+    let tail = head;
     const keys = Object.keys(map).sort((a, b) => a - b);
     
     for (let i of keys) {
         let nodes = map[i];
 
         for (let node of nodes) {
-            if (!head) {
-                head = node;
-            }
-    
-            if (tail) {
-                tail.next = node;
-            }
-            
+            tail.next = node;
             tail = node;
         }
     }
 
-    return head || null;
+    return head.next;
 };
