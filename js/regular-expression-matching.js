@@ -4,33 +4,20 @@
  * @return {boolean}
  */
 var isMatch = function(s, p) {
-    if (p === '.*') return true;
-    const l = s.length;
-    let res = false;
+    if (!p) return !s;
 
-    function bt(s, p, _p) {
-        if (s === p) {
-            res = true;
-            return;
-        };
-
-        for (let i = 0; i < p.length; i++) {
-            if (p[i] === '.') {
-                bt(s, p.replcae('.', s[i]), _p);
-            }
-
-            if (p[i] === '*') {
-                bt(s, p.slice(0, i - 1).concat(p.slice(i + 1, p.length)), _p);
-                for (let j = 0; j <= l - i; j++) {
-                    bt(s, p.replcae('*', copyChar(_p[i - 1], i)), _p);
-                }
-            }
-        }
+    if (p.length === 1) {
+        return s.length === 1 && (p === s || p === '.');
     }
 
-    return res;
-};
+    if (p[1] !== '*') {
+        return s &&  (p[0] === s[0] || p[0] === '.') && isMatch(s.substr(1), p.substr(1));
+    }
 
-function copyChar (char, i, acc = '') {
-    return i < 1 ? acc : copyChar(char, i - 1, acc + char);
-}
+    while ((p[0] === s[0] || p[0] === '.') && s) {
+        if (isMatch(s, p.substr(2))) return true;
+        s = s.substr(1);
+    }
+
+    return isMatch(s, p.substr(2));
+};
