@@ -3,6 +3,34 @@
  * @return {number}
  */
 var maxSubArray = function(nums) {
+
+    function maxSub (nums, left, right) {
+        if (left > right) return -Infinity;
+        const mid = left + right >> 1;
+        const l = maxSub(nums, left, mid - 1);
+        const r = maxSub(nums, mid + 1, right);
+
+        let lMax = 0;
+        let rMax = 0;
+        let sum = 0;
+        for (let i = mid - 1; i >= left; i--) {
+            sum += nums[i];
+            lMax = Math.max(lMax, sum);
+        }
+
+        sum = 0;
+        for (let i = mid + 1; i <= right; i++) {
+            sum += nums[i];
+            rMax = Math.max(rMax, sum);
+        }
+
+        return Math.max(l, r, lMax + nums[mid] + rMax);
+    }
+
+    return maxSub(nums, 0, nums.length - 1);
+}
+
+var maxSubArray1 = function(nums) {
     let sum = 0;
     let res = nums[0];
 
@@ -33,6 +61,6 @@ var maxSubArray2 = function(nums) {
             }
         }
     }
-    
+
     return res;
 };
