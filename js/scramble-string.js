@@ -4,53 +4,34 @@
  * @return {boolean}
  */
 var isScramble = function(s1, s2) {
-    if (s1 === s2) return true;
+    // if (!isSame(s1, s2)) return false;
+    if(s1==s2) return true;
 
-    // const map = new Set();
-    // map.add(s1);
-    const map = {[s1]: 0};
-    let res = false;
+    const l = s1.length;
+    const count = Array(26).fill(0);
 
-    function helper (left, right) {
-        const s = left + right;
-console.log('s: ', s)
-        if (res || s === s2) {
-            res = true;
-            return;
-        }
-
-        if (map[s]) {
-            return;
-        }
-
-        // map.add(s);
-
-        let l, r;
-        for (let i = 1; i < left.length; i++) {
-            l = left.substr(0, i);
-            r = left.substr(i);
-
-            map[s] = 1;
-            helper(r + l, right);
-            map[s] = 0;
-        }
-
-        for (let i = 1; i < right.length; i++) {
-            l = right.substr(0, i);
-            r = right.substr(i);
-
-            map[s] = 1;
-            helper(left, r + l);
-            map[s] = 0;
-        }
+    for(let i = 0; i < l; i++) {
+        count[s1.charCodeAt(i) - 97]++;
+        count[s2.charCodeAt(i) - 97]--;
     }
 
-    let l, r;
-    for (let i = 1; i < s1.length; i++) {
-        l = s1.substr(0, i);
-        r = s1.substr(i);
-        helper(l, r);
+    for(let i = 0; i < 26; i++) {
+        if (count[i] != 0) return false;
     }
-    console.log(map)
-    return res;
+
+    for (let i = 1; i < l; i++) {
+        if (( isScramble(s1.substr(0, i), s2.substr(0, i))
+            && isScramble(s1.substr(i), s2.substr(i)) )
+            || ( isScramble(s1.substr(0, i), s2.substr(l - i))
+            && isScramble(s1.substr(i), s2.substr(0, l - i))) ) {
+                return true;
+            }
+    }
+
+    return false;
 };
+
+const isSame = (s1, s2) => {
+    if (s1 === s2) return true;
+    return [...s1].sort().join('') === [...s2].sort().join('');
+}
