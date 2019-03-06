@@ -9,7 +9,7 @@ var largestRectangleArea = function(heights) {
     heights.push(0);
 
     for (let i = 0; i < heights.length;) {
-        if (!stack.length || heights[stack[stack.length - 1]] <= heights[i]) {
+        if (!stack.length || heights[stack[stack.length - 1]] < heights[i]) {
             stack.push(i++);
         } else {
             let pop = stack.pop();
