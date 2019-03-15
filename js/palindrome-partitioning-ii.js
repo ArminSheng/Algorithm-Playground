@@ -5,23 +5,29 @@
 var minCut = function(s) {
     if (s.length < 2) return 0;
 
-    let res = 0;
-    const map = [];
+    const dp = Array(s.length).fill(0).map((_, i) => i);
 
     for (let i = 1; i < s.length; i++) {
-        for (let p of map) {
-            if (isPalindrome(s.substring(p, i + 1))) {
-                map.push(i);
-                res--;
-                break;
+        if (isPalindrome(s.substring(0, i + 1))) {
+            dp[i] = 0;
+        } else {
+            for (let j = 1; j <= i; j++) {
+                if (isPalindrome(s.substring(j, i + 1))) {
+                    dp[i] = (dp[j - 1] + 1) > dp[i] ? dp[i] : (dp[j - 1] + 1);
+                }
             }
         }
     }
 
-    return res;
+    return dp[s.length - 1];
 };
 
-function isPalindrome(str) {
-    if (!str) return false;
-    return str === str.split('').reverse().join('');
+function isPalindrome(s) {
+    let first = 0;
+    let end = s.length - 1;
+    while(first < end) {
+        if(s[first++] != s[end--])
+            return false;
+    }
+    return true;
 }
