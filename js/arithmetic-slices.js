@@ -2,6 +2,9 @@
  * @param {number[]} A
  * @return {number}
  */
+
+// dp[i] = dp[i - 1] + 1;
+// dp[i] = 以A[i]结尾的等差数列数量
 var numberOfArithmeticSlices = function(A) {
     const dp = [0, 0];
 
@@ -22,7 +25,7 @@ var numberOfArithmeticSlices = function(A) {
     return dp.reduce((cur, acc) => acc + cur, 0);
 }
 
-var numberOfArithmeticSlices = function(A) {
+var numberOfArithmeticSlices2 = function(A) {
     const l = A.length;
     if (l < 3) return 0;
 
