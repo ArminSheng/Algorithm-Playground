@@ -11,20 +11,20 @@
  * @return {boolean}
  */
 
-//  快慢指针
 var hasCycle = function(head) {
     const set = new Set;
-
+    
     while (head) {
         if (set.has(head)) return true;
-
+        
         set.add(head);
         head = head.next;
     }
-
+    
     return false;
 }
 
+//  快慢指针
 var hasCycle1 = function(head) {
     let fast = head;
     let slow = head;
