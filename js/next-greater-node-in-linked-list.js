@@ -10,6 +10,33 @@
  * @return {number[]}
  */
 var nextLargerNodes = function(head) {
+    const res = [];
+    let i = 0;
+    const stack = [];
+
+    while (head) {
+        head.i = i;
+        res[i] = 0;
+
+        while (stack.length) {
+            let node = stack[stack.length - 1];
+            if (node.val < head.val) {
+                res[node.i] = head.val;
+                stack.pop();
+            } else {
+                break;
+            }
+        }
+
+        stack.push(head);
+        head = head.next;
+        i++;
+    }
+
+    return res;
+}
+
+var nextLargerNodes1 = function(head) {
     if (!head) return [];
     
     function getNextLarger (head) {
