@@ -38,7 +38,28 @@
  * @param {Interval[]} intervals
  * @return {Interval[]}
  */
-var merge = function(intervals) {
+var merge = function(intervals) { 
+    intervals = intervals.sort((a, b) => a.start - b.start);
+
+    let interval = intervals[0];
+    const res = [];
+    
+    for (let i = 1; i < intervals.length; i++) {
+        const current = intervals[i];
+        if (current.start <= interval.end) {
+            interval.end = Math.max(interval.end, current.end);
+        } else {
+            res.push(interval);
+            interval = current;
+        }
+    }
+    
+    interval && res.push(interval)
+
+    return res;
+}
+
+var merge1 = function(intervals) {
     for (let i = 0; i < intervals.length; i++) {
         const m = intervals[i];
 
