@@ -4,21 +4,20 @@
  * @return {string}
  */
 var minimizeError = function(prices, target) {
-    let res = Infinity;
+    let res = 0;
+    const n = prices.length;
 
-    function backtrack (i, t, sum) {
-        if (i === prices.length) {
-            if (t === 0) {
-                res = Math.min(res, sum);
-            }
-        } else {
-            const ceil = Math.ceil(prices[i]);
-            const floor = Math.floor(prices[i]);
-            backtrack(i + 1, t - ceil, sum + Math.abs(ceil - prices[i]));
-            backtrack(i + 1, t - floor, sum + Math.abs(prices[i] - floor));
+    for (let p of prices) {
+        if (Number(p).toFixed() === p) {
+            target -= p;
+        }
+    }
+    const dp = [];
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            dp[i][j] = Math.min(dp[i - 1][j] + Math.floor(prices[i]), dp[i - 1][j - 1] + Math.round(prices[i]));
         }
     }
 
-    backtrack(0, target, 0);
-    return res !== Infinity ? res.toFixed(3) : '-1';
+    return res;
 };
