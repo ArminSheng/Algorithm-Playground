@@ -48,14 +48,14 @@ function binarySearch (arr, target) {
 var countSmaller1 = function(nums) {
     const len = nums.length;
     const res = Array(len).fill(0);
-    
+
     const root = new Node(nums[len - 1], len - 1);
-    
+
     for (let i = len - 2; i > -1; i--) {
         const node = new Node(nums[i], i);
         insert(root, node, res);
     }
-    
+
     return res;
 };
 
@@ -80,4 +80,38 @@ function Node (val, index) {
     this.right = null;
     this.count = 0;
     this.index = index;
+}
+
+/** third method
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var countSmaller2 = function(nums) {
+    const len = nums.length;
+    const res = [];
+    const sorted = nums.slice().sort((a, b) => a - b);
+    const hash = {};
+    const map = Array(len).fill(0);;
+
+    for (let i = 0; i < len; i++) {
+        hash[sorted[i]] = i;
+    }
+
+    for (let i = len - 1; i > - 1; i--) {
+        const j = hash[nums[i]];
+        map[j]++;
+        res[i] = sum(j, map);
+    }
+
+    return res;
+};
+
+function sum (k, map) {
+    let res = 0;
+
+    for (let i = 0; i < k; i++) {
+        res += map[i];
+    }
+
+    return res;
 }
