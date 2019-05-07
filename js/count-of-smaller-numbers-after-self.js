@@ -40,3 +40,44 @@ function binarySearch (arr, target) {
 
 	return -1;
 }
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var countSmaller1 = function(nums) {
+    const len = nums.length;
+    const res = Array(len).fill(0);
+    
+    const root = new Node(nums[len - 1], len - 1);
+    
+    for (let i = len - 2; i > -1; i--) {
+        const node = new Node(nums[i], i);
+        insert(root, node, res);
+    }
+    
+    return res;
+};
+
+function insert (root, node, res) {
+    if (node.val <= root.val) {
+        root.count++;
+        if (!root.left) root.left = node;
+        else insert(root.left, node, res);
+    } else {
+        res[node.index] += root.count + 1;
+        if (!root.right) {
+            root.right = node;
+            // res[node.index] = root.count + 1;
+        }
+        else insert(root.right, node, res);
+    }
+}
+
+function Node (val, index) {
+    this.val = val;
+    this.left = null;
+    this.right = null;
+    this.count = 0;
+    this.index = index;
+}

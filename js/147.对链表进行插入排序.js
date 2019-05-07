@@ -54,6 +54,30 @@
  * @return {ListNode}
  */
 var insertionSortList = function(head) {
+    let h = head.next;
+    let cur;
+    let tail = head;
+    head.next = null;
+    let res = new ListNode();
+
+    while(h) {
+        cur = h;
+        if (cur.val < head.val) {
+            cur.next = head;
+            tail = head;
+            head = cur;
+        } else {
+            while (head) {
+                if 
+            }
+            tail.next = cur;
+            tail = cur;
+        }
+        h = h.next;
+    }
+}
+
+var insertionSortList1 = function(head) {
     const arr = [];
 
     while (head) {
@@ -64,7 +88,7 @@ var insertionSortList = function(head) {
     arr.sort((a, b) => a.val - b.val);
 
     const res = new ListNode();
-    
+
     arr.reduce((prev, cur) => {
         cur.next = null;
         prev.next = cur;
