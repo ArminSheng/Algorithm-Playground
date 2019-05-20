@@ -14,7 +14,6 @@ const merge = function (lt, ri) {
     let i = 0;
     let j = 0;
 
-
     while (i < lt.length && j < ri.length) {
         if (lt[i] < ri[j]) {
             tmp.push(lt[i]);
