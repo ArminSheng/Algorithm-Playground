@@ -7,12 +7,12 @@ var reversePairs = function(nums) {
     let res = 0;
     const sorted = nums.slice().sort((a, b) => a - b);
     const hash = {};
-    const map = Array(len).fill(0);
-    const dict = [];
+    const set = Array.from(new Set(sorted));
+    const map = Array(set.length).fill(0);
+    const searchCache = [];
 
-    for (let i = 0; i < len; i++) {
-        hash[sorted[i]] = i;
-        dict[i] = sorted[i];
+    for (let i = 0; i < set.length; i++) {
+        hash[set[i]] = i;
     }
 
     for (let i = len - 1; i > - 1; i--) {
@@ -23,19 +23,40 @@ var reversePairs = function(nums) {
 
     function sum (k) {
         let res = 0;
-        const v = dict[k];
+        const v = set[k] / 2;
+        const lower = binarySearchBound(set, v, k);
 
-        for (let i = 0; i <= k; i++) {
-            const key = dict[i];
+        if (set[k] > 2 * set[lower]) {
+            res += map[lower];
+        }
 
-            if (v > (2 * key)) {
-                res += map[i];
-            }
+        for (let i = 0; i < lower; i++) {
+            res += map[i];
         }
 
         return res;
     }
 
+    function binarySearchBound (arr, target, idx) {
+        if (searchCache[idx] !== undefined) return searchCache[idx];
+
+        let low = 0;
+        let high = arr.length - 1;
+        let mid = 0;
+
+        while (low <= high) {
+            mid = (low + high) >> 1;
+            if (arr[mid] === target) {
+                searchCache[idx] = mid;
+                return mid;
+            }
+            else if (arr[mid] < target) low = mid + 1;
+            else high = mid - 1;
+        }
+
+        searchCache[idx] = mid;
+        return mid;
+    }
+
     return res;
 };
-
