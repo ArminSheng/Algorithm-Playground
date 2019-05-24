@@ -2,7 +2,52 @@
  * @param {number[]} nums
  * @return {number[]}
  */
+
 var countSmaller = function(nums) {
+    const len = nums.length;
+    const hash = {};
+    const sorted = nums.slice().sort((a, b) => a - b);
+    const set = Array.from(new Set(sorted));
+    const map = Array(set.length + 1).fill(0);
+    let res = [];
+
+    for (let i = 0; i < set.length; i++) {
+        hash[set[i]] = i + 1;
+    }
+
+    for (let i = len - 1; i > - 1; i--) {
+        const j = hash[nums[i]];
+        res[i] = sum(j - 1);
+        add(j, 1);
+    }
+
+    function add (x, num) {
+        while (x <= len) {
+            map[x] += num;
+            x  += lowbit(x);
+        }
+    }
+
+    function sum (x) {
+        let res = 0;
+
+        while (x) {
+            res += map[x];
+            x -= lowbit(x);
+        }
+
+        return res;
+    }
+
+    return res;
+}
+
+function lowbit (x) {
+    return x & -x;
+}
+
+// second
+var countSmaller3 = function(nums) {
     const len = nums.length;
     const counts = Array(len).fill(0);
     const arr = nums.slice();
