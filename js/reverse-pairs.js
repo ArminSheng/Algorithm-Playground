@@ -15,9 +15,10 @@ var reversePairs = function(nums) {
         const right = mergeSort(arr.slice(mid));
 
         let i = 0;
-        let j = mid;
+        let j = 0;
+        const rEnd = len - mid;
 
-        while (i < mid && j < len) {
+        while (i < mid && j < rEnd) {
             if (left[i] > 2 * right[j]) {
                 count += mid - i;
                 j++;
