@@ -2,7 +2,9 @@
  * @param {number[][]} matrix
  * @return {number}
  */
-var longestIncreasingPath = function(matrix) {
+
+//  TODO
+var longestIncreasingPath1 = function(matrix) {
     const len = matrix.length;
     if (!len) return 0;
 
@@ -27,8 +29,7 @@ var longestIncreasingPath = function(matrix) {
     }
 }
 
-// Timeover
-var longestIncreasingPath2 = function(matrix) {
+var longestIncreasingPath = function(matrix) {
     const len = matrix.length;
     if (!len) return 0;
 
@@ -36,34 +37,32 @@ var longestIncreasingPath2 = function(matrix) {
     let ans = 1;
     const marked = Array(len).fill(0).map(_ => Array(wid).fill(0));
 
-    function dfs(i, j, m, marked, last, max) {
+    function dfs(i, j, marked) {
         if (marked[i][j]) return marked[i][j];
         if (marked[i][j] || i < 0 || i >= len || j < 0 || j >= wid) return 0;
 
-        // const cur = m[i][j];
-        const cur = marked[i][j];
+        const cur = matrix[i][j];
+        const row = [1, -1, 0, 0];
+        const col = [0, 0, 1, -1];
+        let _max = 1;
 
-        let _max = 1 + Math.max(
-            dfs(i + 1, j, m, marked, cur, max + 1),
-            dfs(i - 1, j, m, marked, cur, max + 1),
-            dfs(i, j + 1, m, marked, cur, max + 1),
-            dfs(i, j - 1, m, marked, cur, max + 1)
-        );
+        for (let k = 0; k < 4; k++) {
+            const _i = i + row[k];
+            const _j = j + col[k];
+            if (matrix[_i] && matrix[_i][_j] !== undefined && cur < matrix[_i][_j]) {
+                _max = Math.max(_max, 1 + dfs(_i, _j, marked));
+            }
+        }
 
-        // if (cur > last) {
-        //     if (max > maxLen) {
-        //         maxLen = max;
-        //     }
-        // }
         marked[i][j] = _max;
         return _max;
     }
 
     for (let i = 0; i < len; i++) {
         for (let j = 0; j < wid; j++) {
-            dfs(i, j, matrix, [], -Infinity, 1);
+            ans = Math.max(ans, dfs(i, j, marked));
         }
     }
 
-    return maxLen;
+    return ans;
 };
