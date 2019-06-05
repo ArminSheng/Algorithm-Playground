@@ -1,30 +1,54 @@
 /**
  * Definition for undirected graph.
- * function UndirectedGraphNode(label) {
- *     this.label = label;
- *     this.neighbors = [];   // Array of UndirectedGraphNode
- * }
  */
+// function Node(val, neighbors) {
+//     this.val = val;
+//     this.neighbors = neighbors;
+// };
+
+
 
 /**
  * @param {UndirectedGraphNode} graph
+ * @param {{}UndirectedGraphNode} map
  * @return {UndirectedGraphNode}
  */
-var cloneGraph = function(graph) {
+var cloneGraph = function(graph, map = {}) {
     if (!graph) return graph;
 
-    function dfs (g, _g) {
-        marked[_g.label] = true;
-        for (let w of _g.neighbors) {
-            let copy = new UndirectedGraphNode(w.label);
-            g.neighbors.push(copy);
-            if (!marked[w.label]) dfs(copy, w);
+    const v = new Node(graph.val, []);
+    map[v.val] = v;
+
+    for (let w of graph.neighbors) {
+        if (map[w.val]) {
+            v.neighbors.push(map[w.val]);
+        } else {
+            v.neighbors.push(cloneGraph(w, map));
         }
     }
 
-    let g = new UndirectedGraphNode(graph.label);
-    const marked = [];
-    dfs(g, graph);
+    return v;
+}
 
-    return g;
+var cloneGraph1 = function(graph) {
+    if (!graph) return graph;
+
+    const map = {};
+
+    function dfs (g) {
+        const v = new Node(g.val, []);
+        map[v.val] = v;
+
+        for (let w of g.neighbors) {
+            if (map[w.val]) {
+                v.neighbors.push(map[w.val]);
+            } else {
+                v.neighbors.push(dfs(w));
+            }
+        }
+
+        return v;
+    }
+
+    return dfs(graph);
 };
