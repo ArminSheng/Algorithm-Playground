@@ -33,12 +33,12 @@ class IndexPriorityQueue {
             p = p >> 1;
         }
     }
-    
+
     sink (k) {
         const {pq, keys, N} = this;
         let c = k * 2;
 
-        while (c <= N && this.less(c, k)) {  
+        while (c <= N && this.less(c, k)) {
             if (c + 1 <= N && this.less(c + 1, c)) c++;
             this.exch(k, c);
             k = c;
