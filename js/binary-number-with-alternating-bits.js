@@ -3,21 +3,20 @@
  * @return {boolean}
  */
 var hasAlternatingBits = function(n) {
-    let k = -2;
-    let num = 0;
+    const temp = n ^ (n >> 1);
+    return (temp & (temp + 1)) === 0;
+}
 
-    while (n >= num) {
-        if (n === num) return true;
-        k += 2;
-        num += 2 ** k;
-    }
+var hasAlternatingBits1 = function(n) {
+    for (let i = -2; i < 0; i++) {
+        let num = 0;
+        let k = i;
 
-    k = -1;
-    num = 0;
-    while (n >= num) {
-        if (n === num) return true;
-        k += 2;
-        num += 2 ** k;
+        while (n >= num) {
+            if (n === num) return true;
+            k += 2;
+            num += 2 ** k;
+        }
     }
 
     return false;
