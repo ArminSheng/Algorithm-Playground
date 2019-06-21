@@ -3,7 +3,55 @@
  * @param {number} k
  * @return {number[]}
  */
+
+//  Best solution
+// 单调队列解法 MonotonicQueue
 var maxSlidingWindow = function(nums, k) {
+    const q = new MonotonicQueue();
+    const res = [];
+
+    for (let i = 0; i < nums.length; i++) {
+        if (i < k - 1) {
+            q.push(nums[i]);
+            continue;
+        }
+
+        q.push(nums[i]);
+        res.push(q.max());
+        q.pop(nums[i - k + 1]);
+    }
+
+    return res;
+}
+
+class MonotonicQueue {
+    arr = [];
+
+    max () {
+        return this.arr[0];
+    }
+
+    pop (n) {
+        if (this.arr[0] === n) {
+            this.arr.shift();
+        }
+    }
+
+    push (n) {
+        let p = this.arr.length;
+
+        while (p && n > this.arr[p - 1]) {
+            this.arr.pop();
+            p--;
+        }
+
+        this.arr.push(n);
+    }
+}
+
+
+// 最大堆解法
+var maxSlidingWindow1 = function(nums, k) {
     if (!nums.length) return [];
     const res = [];
     const len = nums.length;
