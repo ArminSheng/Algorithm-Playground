@@ -1,85 +1,78 @@
-/**
- * 索引优先队列
- */
-class IndexPriorityQueue {
-    constructor () {
-        this.pq = [];
-        this.keys = {};
-        this.N = 0;
-    }
+export default class PriorityQueue {
+    constructor(data = [], compare = defaultCompare) {
+        this.data = data;
+        this.length = this.data.length;
+        this.compare = compare;
 
-    insert (key, priority) {
-        const {pq, keys} = this;
-        const idx = this.includes(key);
-
-        if (idx) {
-            this.change(key, priority, idx);
-            return;
-        }
-
-        pq[++this.N] = key;
-        keys[key] = priority;
-
-        this.swim(this.N);
-    }
-
-    swim (k) {
-        const {pq, keys} = this;
-        let p = k >> 1;
-
-        while (p > 0 && this.less(k, p)) {
-            this.exch(k, p);
-            k = p;
-            p = p >> 1;
+        if (this.length > 0) {
+            for (let i = (this.length >> 1) - 1; i >= 0; i--) this._down(i);
         }
     }
 
-    sink (k) {
-        const {pq, keys, N} = this;
-        let c = k * 2;
+    push(item) {
+        this.data.push(item);
+        this.length++;
+        this._up(this.length - 1);
+    }
 
-        while (c <= N && this.less(c, k)) {
-            if (c + 1 <= N && this.less(c + 1, c)) c++;
-            this.exch(k, c);
-            k = c;
-            c = 2 * k;
+    pop() {
+        if (this.length === 0) return undefined;
+
+        const top = this.data[0];
+        const bottom = this.data.pop();
+        this.length--;
+
+        if (this.length > 0) {
+            this.data[0] = bottom;
+            this._down(0);
         }
+
+        return top;
     }
 
-    less (i, j) {
-        const {keys, pq} = this;
-        return keys[pq[i]] < keys[pq[j]];
+    peek() {
+        return this.data[0];
     }
 
-    exch (i, j) {
-        const pq = this.pq;
-        [pq[i], pq[j]] = [pq[j], pq[i]];
+    _up(pos) {
+        const {data, compare} = this;
+        const item = data[pos];
+
+        while (pos > 0) {
+            const parent = (pos - 1) >> 1;
+            const current = data[parent];
+            if (compare(item, current) >= 0) break;
+            data[pos] = current;
+            pos = parent;
+        }
+
+        data[pos] = item;
     }
 
-    includes (key) {
-        const idx = this.pq.indexOf(key);
-        return idx > -1 ? idx : 0;
+    _down(pos) {
+        const {data, compare} = this;
+        const halfLength = this.length >> 1;
+        const item = data[pos];
+
+        while (pos < halfLength) {
+            let left = (pos << 1) + 1;
+            let best = data[left];
+            const right = left + 1;
+
+            if (right < this.length && compare(data[right], best) < 0) {
+                left = right;
+                best = data[right];
+            }
+            if (compare(best, item) >= 0) break;
+
+            data[pos] = best;
+            pos = left;
+        }
+
+        data[pos] = item;
     }
+}
 
-    change (key, priority, index) {
-        const {pq, keys} = this;
-
-        keys[key] = priority;
-        this.swim(index);
-        this.sink(index);
-    }
-
-    delMin () {
-        if (this.N < 1) return null;
-
-        const m = this.pq[1];
-        delete this.pq[1];
-        delete this.keys[m];
-
-        this.exch(this.N, 1)
-        this.N--;
-        this.sink(1);
-
-        return m;
-    }
+function defaultCompare(a, b) {
+    return a < b ? -1 : a > b ? 1 : 0;
 }
