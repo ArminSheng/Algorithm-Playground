@@ -1,3 +1,4 @@
+// https://github.com/mourner/tinyqueue
 export default class PriorityQueue {
     constructor(data = [], compare = defaultCompare) {
         this.data = data;
