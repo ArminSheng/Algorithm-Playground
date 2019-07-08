@@ -4,6 +4,36 @@
  * @return {number}
  */
 var numSubmatrixSumTarget = function(matrix, target) {
+    const len = matrix.length;
+    const wid = matrix[0].length;
+    const sums = Array(len).fill(0).map(_ => Array(wid + 1).fill(0));
+    let res = 0;
+
+    for (let i = 0; i < len; i++) {
+        for (let j = 1; j <= wid; j++) {
+            sums[i][j] = sums[i][j - 1] + matrix[i][j - 1];
+        }
+    }
+
+    for (let i = 0; i <= wid; i++) {
+        for (let j = i + 1; j <= wid; j++) {
+            let sum = 0;
+            const m = new Map();
+            m.set(0, 1);
+
+            for (let k = 0; k < len; k++) {
+                const val = sums[k][j] - sums[k][i];
+                sum += val;
+                res += (m.get(sum - target) || 0);
+                m.set(sum, (m.get(sum) || 0) + 1);
+            }
+        }
+    }
+
+    return res;
+}
+
+var numSubmatrixSumTarget1 = function(matrix, target) {
     const len = matrix.length + 1;
     const wid = matrix[0].length + 1;
     const dp = Array(len).fill(0).map(_ => Array(wid).fill(0));
