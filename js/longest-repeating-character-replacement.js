@@ -4,6 +4,10 @@
  * @return {number}
  */
 var characterReplacement = function(s, k) {
+
+}
+
+var characterReplacement = function(s, k) {
     let [count, len] = [0, s.length];
 
     for (let i = 0; i < len; i++) {
