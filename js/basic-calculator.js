@@ -26,7 +26,6 @@ var calculate = function(s) {
                 for (; i < len; i++) {
                     if (s[i] === '(') {
                         pair++;
-                        // str += s[i];
                         end++;
                     }
 
@@ -35,13 +34,11 @@ var calculate = function(s) {
                         if (pair === 0) {
                             break;
                         } else {
-                            // str += s[i];
                             end++;
                         }
                     }
 
                     else {
-                        // str += s[i];
                         end++;
                     }
                 }
