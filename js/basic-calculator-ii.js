@@ -2,7 +2,39 @@
  * @param {string} s
  * @return {number}
  */
+
 var calculate = function(s) {
+    const stack = [];
+    let d = 0;
+    let sign = '+';
+
+    for (let i = 0; i < s.length; i++) {
+      const char = s[i];
+      if (/\d/.test(char)) {
+        d = d * 10 + parseInt(s[i], 10);
+      }
+      if (/[\+\-\*\/]/.test(char) || i === s.length - 1) {
+        if (sign === '+') {
+          stack.push(d);
+        }
+        if (sign === '-') {
+          stack.push(-d);
+        }
+        if (sign === '*' || sign === '/') {
+          const tmp =
+            sign === '*' ? stack.pop() * d : parseInt(stack.pop() / d);
+          stack.push(tmp);
+        }
+        sign = char;
+        d = 0;
+      }
+    }
+    return stack.reduce((pre, v) => {
+      return pre + v;
+    });
+  };
+
+var calculate2 = function(s) {
     const operators = [];
     const nums = [];
     let num = '';
