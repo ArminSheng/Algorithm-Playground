@@ -1,6 +1,56 @@
 /**
  * initialize your data structure here.
  */
+class MinStack {
+    stack = new Stack();
+    mins = new Stack();
+
+    push (x) {
+        this.stack.push(x);
+        if (this.mins.empty() || x <= this.mins.peek()) {
+            this.mins.push(x);
+        }
+    }
+
+    pop () {
+        const res = this.stack.pop();
+
+        if (res === this.mins.peek()) {
+            this.mins.pop();
+        }
+
+        return res;
+    }
+
+    top () {
+        return this.stack.peek();
+    }
+
+    getMin () {
+        return this.mins.peek();
+    }
+}
+
+class Stack {
+    stack = [];
+
+    push (x) {
+        this.stack.push(x);
+    }
+
+    pop () {
+        return this.stack.pop();
+    }
+
+    peek () {
+        return this.stack[this.stack.length - 1];
+    }
+
+    empty () {
+        return !this.stack.length;
+    }
+}
+
 var MinStack = function() {
     this.mins = [];
     this.stack = [];
