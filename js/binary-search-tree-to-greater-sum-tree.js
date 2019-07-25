@@ -10,6 +10,24 @@
  * @return {TreeNode}
  */
 var bstToGst = function(root) {
+    let sum = 0;
+    function reverseInorder (root) {
+        if (!root) return;
+
+        reverseInorder(root.right);
+
+        root.val += sum;
+        sum = root.val;
+
+        reverseInorder(root.left);
+    }
+
+    reverseInorder(root);
+    return root;
+};
+
+
+var bstToGst = function(root) {
     const sum = dfs(root);
     inOrderDfs(root, sum);
     return root;
@@ -26,10 +44,5 @@ const inOrderDfs = (root, sum) => {
 }
 
 const dfs = (root) => {
-    if (!root) return 0;
-
-    const left = dfs(root.left);
-    const right = dfs(root.right);
-
-    return left + right + root.val;
+    return root ? dfs(root.left) + dfs(root.right) + root.val : 0;
 }
