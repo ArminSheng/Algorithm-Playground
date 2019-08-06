@@ -8,8 +8,8 @@ var numberOfBoomerangs = function(points) {
 
     for (let i = 0; i < len; i++) {
         const map = {};
-        let x1 = points[i][0];
-        let y1 = points[i][1];
+        const x1 = points[i][0];
+        const y1 = points[i][1];
 
         for (let j = 0; j < len; j++) {
             if (i === j) continue;
