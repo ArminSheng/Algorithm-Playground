@@ -6,14 +6,12 @@
 var leastInterval = function(tasks, n) {
     const dic = {};
     let max = 0;
-    let max_t;
 
     for (let t of tasks) {
         dic[t] = dic[t] || 0;
         dic[t]++;
         if (dic[t] > max) {
             max = dic[t];
-            max_t = t;
         }
     }
 
