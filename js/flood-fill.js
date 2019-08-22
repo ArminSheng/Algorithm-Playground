@@ -7,14 +7,15 @@
  */
 var floodFill = function(image, sr, sc, newColor) {
     let oldColor = image[sr][sc];
+
+    if (oldColor === newColor) return image;
+
     let m = image.length;
     let n = image[0].length;
-    const map = Array(m).fill(0).map(_ => []);
 
     function dfs (arr, x, y) {
-        if (x >= m || y >= n || x < 0 || y < 0 || map[x][y]) return;
+        if (x >= m || y >= n || x < 0 || y < 0 || arr[x][y] !== oldColor) return;
 
-        map[x][y] = true;
         if (arr[x][y] === oldColor) {
             arr[x][y] = newColor;
 
@@ -22,7 +23,9 @@ var floodFill = function(image, sr, sc, newColor) {
             dfs(arr, x - 1, y);
             dfs(arr, x, y + 1);
             dfs(arr, x, y - 1);
+
         }
+
     }
 
     dfs(image, sr, sc);
