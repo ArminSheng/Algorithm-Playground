@@ -8,6 +8,8 @@
 var floodFill = function(image, sr, sc, newColor) {
     let oldColor = image[sr][sc];
 
+    // If newColor equals original color,
+    // means the image do not need update.
     if (oldColor === newColor) return image;
 
     let m = image.length;
@@ -23,9 +25,7 @@ var floodFill = function(image, sr, sc, newColor) {
             dfs(arr, x - 1, y);
             dfs(arr, x, y + 1);
             dfs(arr, x, y - 1);
-
         }
-
     }
 
     dfs(image, sr, sc);
