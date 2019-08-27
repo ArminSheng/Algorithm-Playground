@@ -3,46 +3,48 @@
  * @return {number[]}
  */
 var diffWaysToCompute = function(input) {
+    let num = '';
+    const nums = [];
+    const operators = [];
 
-    /**
-     * @param {string} input
-     * @return {number[]}
-     */
-    function h (str, pos) {
+    for (let c of input) {
+        if (c < '0') {
+            operators.push(c);
+            nums.push(num);
+            num = '';
+        } else {
+            num += c;
+        }
+    }
+
+    if (num) nums.push(num);
+
+    function h (nums, operators) {
+        if (nums.length === 1) return nums;
+
         const res = [];
-        let sum = 0;
-        let num = '';
-        let lastOperator = '+';
 
-        for (let i = pos; i < str.length; i++) {
-            const c = str[i];
+        for (let i = 0; i < operators.length; i++) {
+            const op = operators[i];
+            const l = h(nums.slice(0, i + 1), operators.slice(0, i));
+            const r = h(nums.slice(i + 1), operators.slice(i + 1));
 
-            if (c < '0') {
-                const nums = h(str, i + 1);
-                sum = operate(sum, parseInt(num), lastOperator);
-
-                for (let n of nums) {
-                    res.push(operate(sum, n, c));
+            for (let m of l) {
+                for (let n of r) {
+                    res.push(operate(m, n, op));
                 }
-
-                lastOperator = c;
-                num = '';
-            } else {
-                num += c;
             }
         }
-        if (!res.length) return [parseInt(num)];
-        if (pos === 0) res.push(operate(sum, parseInt(num), lastOperator))
 
         return res;
     }
 
-    return h(input, 0);
-};
+    return h(nums, operators);
+}
 
 function operate (a, b, operator) {
     if (operator === '+') {
-        return a + b;
+        return parseInt(a) + parseInt(b);
     }
 
     if (operator === '-') {
