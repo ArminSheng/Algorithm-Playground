@@ -37,3 +37,19 @@ function isGoodNum (n) {
 
     return rotated !== n;
 }
+
+/**
+ * @param {number} N
+ * @return {number}
+ */
+var rotatedDigits = function(N) {
+    let r1 = /[3|4|7]/;
+    let r2 = /[2|5|6|9]/;
+    let s = 0;
+    for(let i=0; i<=N; i++) {
+      if (!r1.test(i) && r2.test(i)) {
+        s++;
+      }
+    }
+    return s;
+  };
