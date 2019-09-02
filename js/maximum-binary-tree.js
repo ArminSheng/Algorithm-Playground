@@ -10,6 +10,29 @@
  * @return {TreeNode}
  */
 var constructMaximumBinaryTree = function(nums) {
+    let res = null;
+
+    for (let n of nums) {
+        res = helper(res, n);
+    }
+
+    return res;
+}
+
+function helper (root, next) {
+    const node = new TreeNode(next);
+    if (!root) return node;
+
+    if (root.val > next) {
+        root.right = helper(root.right, next);
+        return root;
+    } else {
+        node.left = root;
+        return node;
+    }
+}
+
+var constructMaximumBinaryTree = function(nums) {
     if (!nums.length) return null;
 
     let max = nums[0];
