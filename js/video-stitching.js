@@ -30,7 +30,7 @@ var videoStitching = function(clips, T) {
         if (lt > max) return -1;
 
         let v = Math.min(dp[max], dp[lt]);
-        v += 1
+        v += 1;
         if (ri >= T) return v;
 
         for (let j = max + 1; j <= ri; j++) {
@@ -40,5 +40,5 @@ var videoStitching = function(clips, T) {
         max = Math.max(max, ri);
     }
 
-    return dp[T] || -1;
+    return -1;
 };
