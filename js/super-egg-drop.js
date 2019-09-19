@@ -20,12 +20,26 @@ var superEggDrop = function(K, N) {
                 continue;
             }
 
-            const s = new Set();
-            for (let k = j; k > 0; k--) {
-                s.add(Math.max(dp[i][j - k], dp[i - 1][k - 1]));
+            let a, b;
+            let lt = 1;
+            let rt = j;
+            let k;
+
+            while (lt <= rt) {
+                k = lt + rt >> 1;
+                a = dp[i][j - k];
+                b = dp[i - 1][k - 1];
+
+                if (a > b) {
+                    lt = k + 1;
+                } else if (a < b) {
+                    rt = k - 1;
+                } else {
+                    break;
+                }
             }
 
-            dp[i][j] = Math.min(...s) + 1;
+            dp[i][j] = Math.max(dp[i][j - k], dp[i - 1][k - 1]) + 1;
         }
     }
 
