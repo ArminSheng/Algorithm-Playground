@@ -11,14 +11,12 @@ var minimumTotal = function(triangle) {
 
     for (let i = 1; i < m; i++) {
         for (let j = 0; j < triangle[i].length; j++) {
-            const v = triangle[i][j];
-
             if (j >= i) {
-                triangle[i][j] = v + triangle[i - 1][j - 1];
+                triangle[i][j] += triangle[i - 1][j - 1];
             } else if (j === 0) {
-                triangle[i][j] = v + triangle[i - 1][j];
+                triangle[i][j] += triangle[i - 1][j];
             } else {
-                triangle[i][j] = Math.min(v + triangle[i - 1][j], v + triangle[i - 1][j - 1]);
+                triangle[i][j] += Math.min(triangle[i - 1][j], triangle[i - 1][j - 1]);
             }
         }
     }
