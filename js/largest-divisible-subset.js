@@ -21,13 +21,27 @@ var largestDivisibleSubset = function(nums) {
             const len = arr.length;
 
             if (nums[j] % arr[len - 1] === 0) {
-                arr.push(nums[j]);
-                if (arr.length > res.length) {
-                    res = arr;
+                dp[i][j] = dp[i][j - 1].concat([nums[j]]);
+
+                if (dp[i][j].length > res.length) {
+                    res = dp[i][j];
+                }
+            } else {
+                dp[i][j] = dp[i][j - 1];
+            }
+        }
+    }
+
+    for (let i = 1; i < l; i++) {
+        for (let j = 0; j < i; j++) {
+            const arr = dp[0][j];
+            const n = arr[arr.length - 1];
+            if (nums[i] % n === 0) {
+                const t = arr.concat(dp[i][l - 1]);
+                if (t.length > res.length) {
+                    res = t;
                 }
             }
-
-            dp[i][j] = arr;
         }
     }
 
